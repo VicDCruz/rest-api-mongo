@@ -2,10 +2,12 @@ var express = require("express"),
   app = express(),
   http = require("http"),
   server = http.createServer(app),
-  mongoose = require('mongoose');
+  mongoose = require('mongoose'),
+  bodyParser = require('body-parser'),
+  methodOverride = require('method-override');
 
-app.use(express.bodyParser());
-app.use(express.methodOverride());
+app.use(bodyParser());
+app.use(methodOverride());
 app.use(app.router);
 
 app.get('/', function (req, res) {
