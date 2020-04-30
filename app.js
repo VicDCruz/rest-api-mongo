@@ -4,11 +4,9 @@ var express = require("express"),
   server = http.createServer(app),
   mongoose = require('mongoose');
 
-app.configure(function () {
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-  app.use(app.router);
-});
+app.use(express.bodyParser());
+app.use(express.methodOverride());
+app.use(app.router);
 
 app.get('/', function (req, res) {
   res.send("Hello world!");
