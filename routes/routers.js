@@ -1,7 +1,7 @@
 //File: routers/routers.js
 module.exports = function (app) {
 
-  var RouterCollection = require('../models/router.js');
+  var RouterCollection = require('../models/routers');
 
   //GET - Return all routers in the DB
   findAllRouters = function (req, res) {

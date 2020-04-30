@@ -8,7 +8,7 @@ var express = require("express"),
 
 app.use(bodyParser());
 app.use(methodOverride());
-app.use(app.router);
+// app.use(app.router);
 
 app.get('/', function (req, res) {
   res.send("Hello world!");
