@@ -16,7 +16,10 @@ app.get('/', function (req, res) {
 
 routes = require('./routes/routers')(app);
 
-mongoose.connect('mongodb://localhost/routers', function (err, res) {
+mongoose.connect('mongodb://localhost/routers', {
+  useNewUrlParser: true ,
+  useUnifiedTopology: true
+}, function (err, res) {
   if (err) {
     console.log('ERROR: connecting to Database. ' + err);
   } else {
