@@ -1,5 +1,5 @@
 //File: routers/routers.js
-// 1 - Collección no pudo ser obtenida
+// 1 - Colección no pudo ser obtenida
 // 2 - Error para encontrar un ID
 // 3 - Error al guardar con un registro
 // 4 - Error al guardar con varios registros
