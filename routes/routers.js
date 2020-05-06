@@ -68,13 +68,13 @@ module.exports = function (app) {
           console.log('Created');
         } else {
           console.log('ERROR: ' + err);
-          writeOnFile('addRouter,' + err + ',' + req.body);
+          writeOnFile('addRouter,' + err + ',' + JSON.stringify(req.body));
           res.status(404).send('ERROR: ' + err);
         }
       });
     } else {
       console.log('ERROR: Keys not corresponding');
-      writeOnFile('addRouter,Keys not corresponding,' + req.body);
+      writeOnFile('addRouter,Keys not corresponding,' + JSON.stringify(req.body));
       res.status(404).send('ERROR: Keys not corresponding');
     }
 
@@ -136,7 +136,7 @@ module.exports = function (app) {
           console.log('Updated');
         } else {
           console.log('ERROR: ' + err);
-          writeOnFile('updateRouter,' + err + ',' + req.body);
+          writeOnFile('updateRouter,' + err + ',' + JSON.stringify(req.body));
           res.status(500).send('ERROR: ' + err);
         }
         res.send(router);
@@ -152,7 +152,7 @@ module.exports = function (app) {
           console.log('Removed');
         } else {
           console.log('ERROR: ' + err);
-          writeOnFile('deleteRouter,' + err + ',' + req.body);
+          writeOnFile('deleteRouter,' + err + ',' + JSON.stringify(req.body));
           res.status(500).send('ERROR: ' + err);
         }
       })
