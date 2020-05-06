@@ -3,7 +3,7 @@ module.exports = function (app) {
 
   var RouterCollection = require('../models/routers');
   const fs = require('fs');
-  const fields = ['mac', 'email', 'edad', 'cp', 'genero'];
+  const fields = ['noeco', 'mac', 'email', 'edad', 'cp', 'genero'];
 
   writeOnFile = text => {
     fs.appendFile('errors.txt', text + '\n', function (err) {
