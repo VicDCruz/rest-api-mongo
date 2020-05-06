@@ -59,6 +59,7 @@ module.exports = function (app) {
     if (checkKeys(Object.keys(req.body))) {
       if (checkGender(req.body.genero)) {
         var router = new RouterCollection({
+          noeco: req.body.noeco,
           mac: req.body.mac,
           email: req.body.email,
           edad: req.body.edad,
@@ -102,6 +103,7 @@ module.exports = function (app) {
       if (checkKeys(Object.keys(req.body))) {
         if (checkGender(element.genero)) {
           router = new RouterCollection({
+            noeco: element.noeco,
             mac: element.mac,
             email: element.email,
             edad: element.edad,
