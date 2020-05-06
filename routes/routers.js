@@ -9,8 +9,7 @@ module.exports = function (app) {
     fs.appendFile('errors.txt', text + '\n', function (err) {
       if (err) {
         console.log('ERROR: ' + err);
-        res.status(505).send('Internal server error');
-      };
+      }
     });
   };
 
