@@ -11,7 +11,7 @@ app.use(methodOverride());
 // app.use(app.router);
 
 app.get('/', function (req, res) {
-  res.send("Hello world!");
+  res.send("Hello, world!");
 });
 
 routes = require('./routes/routers')(app);

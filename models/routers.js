@@ -4,11 +4,11 @@ var mongoose = require('mongoose'),
 var routerSchema = new Schema({
   mac: { type: String },
   email: { type: String },
-  edad: { type: Number },
+  edad: { type: String },
   cp: { type: String },
   genero: {
     type: String, enum:
-      ['hombre', 'mujer']
+      ['hombre', 'mujer', 'femenino', 'masculino']
   },
 });
 

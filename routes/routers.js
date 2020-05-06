@@ -2,33 +2,47 @@
 module.exports = function (app) {
 
   var RouterCollection = require('../models/routers');
+  const fs = require('fs');
+
+  writeOnFile = text => {
+    fs.appendFile('errors.txt', text + '\n', function (err) {
+      if (err) {
+        console.log('ERROR: ' + err);
+        res.status(505).send('Internal server error');
+      };
+    });
+  };
 
   //GET - Return all routers in the DB
-  findAllRouters = function (req, res) {
+  findAllRouters = (req, res) => {
     RouterCollection.find(function (err, routers) {
       if (!err) {
         console.log('GET /routers')
         res.send(routers);
       } else {
         console.log('ERROR: ' + err);
+        writeOnFile('findAllRouters,' + err +',');
+        res.status(404).send('Collection could not be returned');
       }
     });
   };
 
   //GET - Return a Router with specified ID
-  findById = function (req, res) {
-    RouterCollection.findById(req.params.id, function (err, router) {
+  findById = (req, res) => {
+    RouterCollection.findById(req.params.id, (err, router) => {
       if (!err) {
         console.log('GET /router/' + req.params.id);
         res.send(router);
       } else {
         console.log('ERROR: ' + err);
+        writeOnFile('findById,' + err +',' + req.params.id);
+        res.status(404).send('ERROR: ' + err);
       }
     });
   };
 
   //POST - Insert a new Router in the DB
-  addRouter = function (req, res) {
+  addRouter = (req, res) => {
     console.log('POST');
     console.log(req.body);
 
@@ -40,31 +54,71 @@ module.exports = function (app) {
       genero: req.body.genero,
     });
 
-    router.save(function (err) {
+    router.save(err => {
       if (!err) {
         console.log('Created');
       } else {
         console.log('ERROR: ' + err);
+        writeOnFile('addRouter,' + err +',' + req.body);
+        res.status(404).send('ERROR: ' + err);
       }
     });
 
     res.send(router);
   };
 
+  //POST - Insert a new Router in the DB
+  addManyRouters = (req, res) => {
+    console.log('POST');
+    console.log('Many (length): ' + req.body.length);
+
+    var router;
+    var routers = [];
+    var i = 1;
+
+    req.body.forEach(element => {
+      router = new RouterCollection({
+        mac: element.mac,
+        email: element.email,
+        edad: element.edad,
+        cp: element.cp,
+        genero: element.genero,
+      });
+
+      router.save(err => {
+        if (!err) {
+          console.log('Created ' + i + ' of ' + req.body.length);
+        } else {
+          console.log('ERROR: ' + err);
+          writeOnFile('addManyRouters,' + err +',' + element);
+          res.status(404).send('Can not follow processing\nERROR: ' + err);
+        }
+      });
+
+      routers.push(router);
+
+      i++;
+    });
+
+    res.send(routers);
+  };
+
   //PUT - Update a register already exists
-  updateRouter = function (req, res) {
-    RouterCollection.findById(req.params.id, function (err, router) {
-      router.mac = req.body.petId;
+  updateRouter = (req, res) => {
+    RouterCollection.findById(req.params.id, (_, router) => {
+      router.mac = req.body.mac;
       router.email = req.body.email;
       router.edad = req.body.edad;
       router.cp = req.body.cp;
       router.genero = req.body.genero;
 
-      router.save(function (err) {
+      router.save(err => {
         if (!err) {
           console.log('Updated');
         } else {
           console.log('ERROR: ' + err);
+          writeOnFile('updateRouter,' + err +',' + req.body);
+          res.status(500).send('ERROR: ' + err);
         }
         res.send(router);
       });
@@ -72,13 +126,15 @@ module.exports = function (app) {
   }
 
   //DELETE - Delete a Router with specified ID
-  deleteRouter = function (req, res) {
-    RouterCollection.findById(req.params.id, function (err, router) {
-      router.remove(function (err) {
+  deleteRouter = (req, res) => {
+    RouterCollection.findById(req.params.id, (_, router) => {
+      router.remove(err => {
         if (!err) {
           console.log('Removed');
         } else {
           console.log('ERROR: ' + err);
+          writeOnFile('deleteRouter,' + err +',' + req.body);
+          res.status(500).send('ERROR: ' + err);
         }
       })
     });
@@ -88,6 +144,7 @@ module.exports = function (app) {
   app.get('/routers', findAllRouters);
   app.get('/router/:id', findById);
   app.post('/router', addRouter);
+  app.post('/routers', addManyRouters);
   app.put('/router/:id', updateRouter);
   app.delete('/router/:id', deleteRouter);
 
