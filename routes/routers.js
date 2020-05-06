@@ -13,13 +13,15 @@ module.exports = function (app) {
     });
   };
 
-  check = keys => {
+  checkKeys = keys => {
     output = true;
     keys.forEach(key => {
       output = output && fields.includes(key);
     });
     return output;
   };
+
+  checkGender = gender => ['hombre', 'mujer', 'femenino', 'masculino', ''].includes(gender);
 
   //GET - Return all routers in the DB
   findAllRouters = (req, res) => {
@@ -54,7 +56,7 @@ module.exports = function (app) {
     console.log('POST');
     console.log(req.body);
 
-    if (check(Object.keys(req.body))) {
+    if (checkKeys(Object.keys(req.body))) {
       var router = new RouterCollection({
         mac: req.body.mac,
         email: req.body.email,
@@ -91,7 +93,7 @@ module.exports = function (app) {
     var i = 1;
 
     req.body.forEach(element => {
-      if (check(Object.keys(req.body))) {
+      if (checkKeys(Object.keys(req.body))) {
         router = new RouterCollection({
           mac: element.mac,
           email: element.email,
