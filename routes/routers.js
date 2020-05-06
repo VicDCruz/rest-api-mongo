@@ -1,4 +1,13 @@
 //File: routers/routers.js
+// 1 - Collección no pudo ser obtenida
+// 2 - Error para encontrar un ID
+// 3 - Error al guardar con un registro
+// 4 - Error al guardar con varios registros
+// 5 - Género no es correcto
+// 6 - Llaves no corresponden
+// 7 - Error al actualizar
+// 8 - Error al eliminar
+
 module.exports = function (app) {
 
   var RouterCollection = require('../models/routers');
@@ -31,8 +40,8 @@ module.exports = function (app) {
         res.send(routers);
       } else {
         console.log('ERROR: ' + err);
-        writeOnFile('findAllRouters,' + err + ',');
-        res.status(404).send('Collection could not be returned');
+        writeOnFile('findAllRouters,1,');
+        res.status(404).send('Error 1');
       }
     });
   };
@@ -45,8 +54,8 @@ module.exports = function (app) {
         res.send(router);
       } else {
         console.log('ERROR: ' + err);
-        writeOnFile('findById,' + err + ',' + req.params.id);
-        res.status(404).send('ERROR: ' + err);
+        writeOnFile('findById,2,' + req.params.id);
+        res.status(404).send('ERROR: 2');
       }
     });
   };
@@ -72,19 +81,19 @@ module.exports = function (app) {
             console.log('Created');
           } else {
             console.log('ERROR: ' + err);
-            writeOnFile('addRouter,' + err + ',' + JSON.stringify(req.body));
-            res.status(404).send('ERROR: ' + err);
+            writeOnFile('addRouter,3,' + JSON.stringify(req.body));
+            res.status(404).send('ERROR: 3');
           }
         });
       } else {
         console.log('ERROR: Gender is not correct');
-        writeOnFile('addRouter,Gender is not correct,' + JSON.stringify(req.body));
-        res.status(404).send('ERROR: Gender is not correct');
+        writeOnFile('addRouter,5,' + JSON.stringify(req.body));
+        res.status(404).send('Error 5');
       }
     } else {
       console.log('ERROR: Keys not corresponding');
-      writeOnFile('addRouter,Keys not corresponding,' + JSON.stringify(req.body));
-      res.status(404).send('ERROR: Keys not corresponding');
+      writeOnFile('addRouter,6,' + JSON.stringify(req.body));
+      res.status(404).send('Error: 6');
     }
 
     res.send(router);
@@ -116,21 +125,21 @@ module.exports = function (app) {
               console.log('Created ' + i + ' of ' + req.body.length);
             } else {
               console.log('ERROR: ' + err);
-              writeOnFile('addManyRouters,' + err + ',' + element);
-              res.status(404).send('Can not follow processing\nERROR: ' + err);
+              writeOnFile('addManyRouters,7,' + element);
+              res.status(404).send('Error 4');
             }
           });
 
           routers.push(router);
         } else {
           console.log('ERROR: Gender is not correct');
-          writeOnFile('addRouter,Gender is not correct,' + JSON.stringify(req.body));
-          res.status(404).send('ERROR: Gender is not correct');
+          writeOnFile('addRouter,5,' + JSON.stringify(req.body));
+          res.status(404).send('Error: 5');
         }
       } else {
         console.log('ERROR: Keys not corresponding');
-        writeOnFile('addRouter,Keys not corresponding,' + element);
-        res.status(404).send('ERROR: Keys not corresponding');
+        writeOnFile('addRouter,6,' + element);
+        res.status(404).send('Error: 6');
       }
       i++;
     });
@@ -152,8 +161,8 @@ module.exports = function (app) {
           console.log('Updated');
         } else {
           console.log('ERROR: ' + err);
-          writeOnFile('updateRouter,' + err + ',' + JSON.stringify(req.body));
-          res.status(500).send('ERROR: ' + err);
+          writeOnFile('updateRouter,7,' + JSON.stringify(req.body));
+          res.status(500).send('Error: 7');
         }
         res.send(router);
       });
@@ -168,8 +177,8 @@ module.exports = function (app) {
           console.log('Removed');
         } else {
           console.log('ERROR: ' + err);
-          writeOnFile('deleteRouter,' + err + ',' + JSON.stringify(req.body));
-          res.status(500).send('ERROR: ' + err);
+          writeOnFile('deleteRouter,8,' + JSON.stringify(req.body));
+          res.status(500).send('Error: 8');
         }
       })
     });
