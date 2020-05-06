@@ -21,7 +21,7 @@ module.exports = function (app) {
     return output;
   };
 
-  checkGender = gender => ['hombre', 'mujer', 'femenino', 'masculino', ''].includes(gender);
+  checkGender = genero => ['hombre', 'mujer', 'femenino', 'masculino', ''].includes(genero);
 
   //GET - Return all routers in the DB
   findAllRouters = (req, res) => {
@@ -57,23 +57,29 @@ module.exports = function (app) {
     console.log(req.body);
 
     if (checkKeys(Object.keys(req.body))) {
-      var router = new RouterCollection({
-        mac: req.body.mac,
-        email: req.body.email,
-        edad: req.body.edad,
-        cp: req.body.cp,
-        genero: req.body.genero,
-      });
+      if (checkGender(req.body.genero)) {
+        var router = new RouterCollection({
+          mac: req.body.mac,
+          email: req.body.email,
+          edad: req.body.edad,
+          cp: req.body.cp,
+          genero: req.body.genero,
+        });
 
-      router.save(err => {
-        if (!err) {
-          console.log('Created');
-        } else {
-          console.log('ERROR: ' + err);
-          writeOnFile('addRouter,' + err + ',' + JSON.stringify(req.body));
-          res.status(404).send('ERROR: ' + err);
-        }
-      });
+        router.save(err => {
+          if (!err) {
+            console.log('Created');
+          } else {
+            console.log('ERROR: ' + err);
+            writeOnFile('addRouter,' + err + ',' + JSON.stringify(req.body));
+            res.status(404).send('ERROR: ' + err);
+          }
+        });
+      } else {
+        console.log('ERROR: Gender is not correct');
+        writeOnFile('addRouter,Gender is not correct,' + JSON.stringify(req.body));
+        res.status(404).send('ERROR: Gender is not correct');
+      }
     } else {
       console.log('ERROR: Keys not corresponding');
       writeOnFile('addRouter,Keys not corresponding,' + JSON.stringify(req.body));
@@ -94,25 +100,31 @@ module.exports = function (app) {
 
     req.body.forEach(element => {
       if (checkKeys(Object.keys(req.body))) {
-        router = new RouterCollection({
-          mac: element.mac,
-          email: element.email,
-          edad: element.edad,
-          cp: element.cp,
-          genero: element.genero,
-        });
+        if (checkGender(element.genero)) {
+          router = new RouterCollection({
+            mac: element.mac,
+            email: element.email,
+            edad: element.edad,
+            cp: element.cp,
+            genero: element.genero,
+          });
 
-        router.save(err => {
-          if (!err) {
-            console.log('Created ' + i + ' of ' + req.body.length);
-          } else {
-            console.log('ERROR: ' + err);
-            writeOnFile('addManyRouters,' + err + ',' + element);
-            res.status(404).send('Can not follow processing\nERROR: ' + err);
-          }
-        });
+          router.save(err => {
+            if (!err) {
+              console.log('Created ' + i + ' of ' + req.body.length);
+            } else {
+              console.log('ERROR: ' + err);
+              writeOnFile('addManyRouters,' + err + ',' + element);
+              res.status(404).send('Can not follow processing\nERROR: ' + err);
+            }
+          });
 
-        routers.push(router);
+          routers.push(router);
+        } else {
+          console.log('ERROR: Gender is not correct');
+          writeOnFile('addRouter,Gender is not correct,' + JSON.stringify(req.body));
+          res.status(404).send('ERROR: Gender is not correct');
+        }
       } else {
         console.log('ERROR: Keys not corresponding');
         writeOnFile('addRouter,Keys not corresponding,' + element);
