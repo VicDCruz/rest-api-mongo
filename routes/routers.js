@@ -3,6 +3,7 @@ module.exports = function (app) {
 
   var RouterCollection = require('../models/routers');
   const fs = require('fs');
+  const fields = ['mac', 'email', 'edad', 'cp', 'genero'];
 
   writeOnFile = text => {
     fs.appendFile('errors.txt', text + '\n', function (err) {
@@ -13,6 +14,14 @@ module.exports = function (app) {
     });
   };
 
+  check = keys => {
+    output = true;
+    keys.forEach(key => {
+      output = output && fields.includes(key);
+    });
+    return output;
+  };
+
   //GET - Return all routers in the DB
   findAllRouters = (req, res) => {
     RouterCollection.find(function (err, routers) {
@@ -21,7 +30,7 @@ module.exports = function (app) {
         res.send(routers);
       } else {
         console.log('ERROR: ' + err);
-        writeOnFile('findAllRouters,' + err +',');
+        writeOnFile('findAllRouters,' + err + ',');
         res.status(404).send('Collection could not be returned');
       }
     });
@@ -35,7 +44,7 @@ module.exports = function (app) {
         res.send(router);
       } else {
         console.log('ERROR: ' + err);
-        writeOnFile('findById,' + err +',' + req.params.id);
+        writeOnFile('findById,' + err + ',' + req.params.id);
         res.status(404).send('ERROR: ' + err);
       }
     });
@@ -46,23 +55,29 @@ module.exports = function (app) {
     console.log('POST');
     console.log(req.body);
 
-    var router = new RouterCollection({
-      mac: req.body.mac,
-      email: req.body.email,
-      edad: req.body.edad,
-      cp: req.body.cp,
-      genero: req.body.genero,
-    });
+    if (check(Object.keys(req.body))) {
+      var router = new RouterCollection({
+        mac: req.body.mac,
+        email: req.body.email,
+        edad: req.body.edad,
+        cp: req.body.cp,
+        genero: req.body.genero,
+      });
 
-    router.save(err => {
-      if (!err) {
-        console.log('Created');
-      } else {
-        console.log('ERROR: ' + err);
-        writeOnFile('addRouter,' + err +',' + req.body);
-        res.status(404).send('ERROR: ' + err);
-      }
-    });
+      router.save(err => {
+        if (!err) {
+          console.log('Created');
+        } else {
+          console.log('ERROR: ' + err);
+          writeOnFile('addRouter,' + err + ',' + req.body);
+          res.status(404).send('ERROR: ' + err);
+        }
+      });
+    } else {
+      console.log('ERROR: Keys not corresponding');
+      writeOnFile('addRouter,Keys not corresponding,' + req.body);
+      res.status(404).send('ERROR: Keys not corresponding');
+    }
 
     res.send(router);
   };
@@ -77,26 +92,31 @@ module.exports = function (app) {
     var i = 1;
 
     req.body.forEach(element => {
-      router = new RouterCollection({
-        mac: element.mac,
-        email: element.email,
-        edad: element.edad,
-        cp: element.cp,
-        genero: element.genero,
-      });
+      if (check(Object.keys(req.body))) {
+        router = new RouterCollection({
+          mac: element.mac,
+          email: element.email,
+          edad: element.edad,
+          cp: element.cp,
+          genero: element.genero,
+        });
 
-      router.save(err => {
-        if (!err) {
-          console.log('Created ' + i + ' of ' + req.body.length);
-        } else {
-          console.log('ERROR: ' + err);
-          writeOnFile('addManyRouters,' + err +',' + element);
-          res.status(404).send('Can not follow processing\nERROR: ' + err);
-        }
-      });
+        router.save(err => {
+          if (!err) {
+            console.log('Created ' + i + ' of ' + req.body.length);
+          } else {
+            console.log('ERROR: ' + err);
+            writeOnFile('addManyRouters,' + err + ',' + element);
+            res.status(404).send('Can not follow processing\nERROR: ' + err);
+          }
+        });
 
-      routers.push(router);
-
+        routers.push(router);
+      } else {
+        console.log('ERROR: Keys not corresponding');
+        writeOnFile('addRouter,Keys not corresponding,' + element);
+        res.status(404).send('ERROR: Keys not corresponding');
+      }
       i++;
     });
 
@@ -117,7 +137,7 @@ module.exports = function (app) {
           console.log('Updated');
         } else {
           console.log('ERROR: ' + err);
-          writeOnFile('updateRouter,' + err +',' + req.body);
+          writeOnFile('updateRouter,' + err + ',' + req.body);
           res.status(500).send('ERROR: ' + err);
         }
         res.send(router);
@@ -133,7 +153,7 @@ module.exports = function (app) {
           console.log('Removed');
         } else {
           console.log('ERROR: ' + err);
-          writeOnFile('deleteRouter,' + err +',' + req.body);
+          writeOnFile('deleteRouter,' + err + ',' + req.body);
           res.status(500).send('ERROR: ' + err);
         }
       })
