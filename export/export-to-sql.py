@@ -17,8 +17,18 @@ query = {}
 
 results = collection.find(query)
 
+sql = "TRUNCATE TABLE routers"
+sqlcursor.execute(sql)
+sqlConnection.commit()
+
 for x in results:
     sql = "INSERT INTO routers (noeco, mac, email, edad, cp, genero) VALUES (%s, %s, %s, %s, %s, %s)"
+    if "noeco" not in x:
+        x.update(noeco = "sin eco")
+        print(x)
+    if "email" not in x:
+        x.update(email = "sin email")
+        print(x)
     val = (x['noeco'], x['mac'], x['email'], x['edad'], x['cp'], x['genero'])
     sqlcursor.execute(sql, val)
     sqlConnection.commit()
