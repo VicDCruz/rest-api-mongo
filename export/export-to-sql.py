@@ -23,7 +23,7 @@ for x in results:
       x.update(noeco = "sin noeco")
     if "mac" not in x:
       x.update(mac = "sin mac")
-    print x
+    print(x)
     val = (x.noeco, x.mac, x.email, x.edad, x.cp, x.genero)
     sqlcursor.execute(sql, val)
     sqlConnection.commit()
