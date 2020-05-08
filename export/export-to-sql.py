@@ -6,10 +6,10 @@ db = mongoConnection["routers"]
 collection = db["routers"]
 
 sqlConnection = mysql.connector.connect(
-  host="localhost",
-  user="baz",
-  passwd="Baz1nd1c4!",
-  database="routers"
+    host="localhost",
+    user="baz",
+    passwd="Baz1nd1c4!",
+    database="routers"
 )
 sqlcursor = sqlConnection.cursor()
 
@@ -26,17 +26,17 @@ for x in results:
     cp = "sin cp"
     genero = "sin genero"
     if "noeco" in x:
-      noeco = x.noeco
+        noeco = x.noeco
     if "mac" in x:
-      mac = x.mac
+        mac = x.mac
     if "email" in x:
-      email = x.email
+        email = x.email
     if "edad" in x:
-      edad = x.edad
+        edad = x.edad
     if "cp" in x:
-      cp = x.cp
+        cp = x.cp
     if "genero" in x:
-      genero = x.genero
+        genero = x.genero
     val = (noeco, mac, email, edad, cp, genero)
     sqlcursor.execute(sql, val)
     sqlConnection.commit()
