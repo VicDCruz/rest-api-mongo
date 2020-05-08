@@ -19,12 +19,25 @@ results = collection.find(query)
 
 for x in results:
     sql = "INSERT INTO routers (noeco, mac, email, edad, cp, genero) VALUES (%s, %s, %s, %s, %s, %s)"
-    if "noeco" not in x:
-      x.update(noeco = "sin noeco")
-    if "mac" not in x:
-      x.update(mac = "sin mac")
-    print(x)
-    val = (x.noeco, x.mac, x.email, x.edad, x.cp, x.genero)
+    noeco = "sin noeco"
+    mac = "sin mac"
+    email = "sin email"
+    edad = "sin edad"
+    cp = "sin cp"
+    genero = "sin genero"
+    if "noeco" in x:
+      noeco = x.noeco
+    if "mac" in x:
+      mac = x.mac
+    if "email" in x:
+      email = x.email
+    if "edad" in x:
+      edad = x.edad
+    if "cp" in x:
+      cp = x.cp
+    if "genero" in x:
+      genero = x.genero
+    val = (noeco, mac, email, edad, cp, genero)
     sqlcursor.execute(sql, val)
     sqlConnection.commit()
     print(sqlcursor.rowcount, "record inserted.")
