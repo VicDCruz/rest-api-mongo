@@ -18,8 +18,8 @@ query = {}
 results = collection.find(query)
 
 for x in results:
-    sql = "INSERT INTO customers (name, address) VALUES (%s, %s)"
-    val = ("John", "Highway 21")
+    sql = "INSERT INTO routers (noeco, mac, email, edad, cp, genero) VALUES (%s, %s, %s, %s, %s, %s)"
+    val = (x.noeco, x.mac, x.email, x.edad, x.cp, x.genero)
     sqlcursor.execute(sql, val)
     sqlConnection.commit()
     print(sqlcursor.rowcount, "record inserted.")
