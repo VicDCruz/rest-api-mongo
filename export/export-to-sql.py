@@ -26,6 +26,8 @@ for x in results:
         x.update(noeco = "sin eco")
     if "email" not in x:
         x.update(email = "sin email")
+    if "edad" not in x:
+        x.update(edad = "sin edad")
     sql = "INSERT INTO routers (noeco, mac, email, edad, cp, genero) VALUES (%s, %s, %s, %s, %s, %s)"
     val = (x['noeco'], x['mac'], x['email'], x['edad'], x['cp'], x['genero'])
     sqlcursor.execute(sql, val)
