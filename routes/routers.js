@@ -12,7 +12,20 @@ module.exports = function (app) {
 
   var RouterCollection = require('../models/routers');
   const fs = require('fs');
-  const fields = ['noeco', 'mac', 'email', 'edad', 'cp', 'genero'];
+  const fields = [
+    'noeco', 
+    'mac', 
+    'email', 
+    'edad', 
+    'cp', 
+    'genero', 
+    'urlfoto', 
+    'ap1',
+    'ap2',
+    'nombre',
+    'tipo',
+    'fase'
+  ];
 
   writeOnFile = text => {
     fs.appendFile('errors.txt', text + '\n', function (err) {
@@ -74,6 +87,12 @@ module.exports = function (app) {
           edad: req.body.edad,
           cp: req.body.cp,
           genero: req.body.genero,
+          urlfoto: req.body.urlfoto,
+          ap1: req.body.ap1,
+          ap2: req.body.ap2,
+          nombre: req.body.nombre,
+          tipo: req.body.tipo,
+          fase: req.body.fase
         });
 
         router.save(err => {
@@ -118,6 +137,12 @@ module.exports = function (app) {
             edad: element.edad,
             cp: element.cp,
             genero: element.genero,
+            urlfoto: element.urlfoto,
+            ap1: element.ap1,
+            ap2: element.ap2,
+            nombre: element.nombre,
+            tipo: element.tipo,
+            fase: element.fase
           });
 
           router.save(err => {
@@ -155,6 +180,12 @@ module.exports = function (app) {
       router.edad = req.body.edad;
       router.cp = req.body.cp;
       router.genero = req.body.genero;
+      router.urlfoto = req.body.urlfoto;
+      router.ap1 = req.body.ap1;
+      router.ap2 = req.body.ap2;
+      router.nombre = req.body.nombre;
+      router.tipo = req.body.tipo;
+      router.fase = req.body.fase;
 
       router.save(err => {
         if (!err) {

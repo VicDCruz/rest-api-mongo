@@ -11,6 +11,12 @@ var routerSchema = new Schema({
     type: String, enum:
       ['hombre', 'mujer', 'femenino', 'masculino', '']
   },
+  urlfoto: { type: String },
+  ap1: { type: String },
+  ap2: { type: String },
+  nombre: { type: String },
+  tipo: { type: String },
+  fase: { type: String },
 }, { timestamps: { createdAt: 'created_at' } });
 
 
