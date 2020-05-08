@@ -1,12 +1,25 @@
 import pymongo
+import mysql.connector
 
-conecction = pymongo.MongoClient("mongodb://localhost:27017/")
-db = conecction["routers"]
+mongoConnection = pymongo.MongoClient("mongodb://localhost:27017/")
+db = mongoConnection["routers"]
 collection = db["routers"]
 
-query = { }
+sqlConnection = mysql.connector.connect(
+  host="localhost",
+  user="baz",
+  passwd="Baz1nd1c4!",
+  database="routers"
+)
+sqlcursor = sqlConnection.cursor()
+
+query = {}
 
 results = collection.find(query)
 
 for x in results:
-  print(x)
+    sql = "INSERT INTO customers (name, address) VALUES (%s, %s)"
+    val = ("John", "Highway 21")
+    sqlcursor.execute(sql, val)
+    sqlConnection.commit()
+    print(sqlcursor.rowcount, "record inserted.")
