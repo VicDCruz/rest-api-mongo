@@ -211,6 +211,7 @@ module.exports = function (app) {
           writeOnFile('deleteRouter,8,' + JSON.stringify(req.body));
           res.status(500).send('Error: 8');
         }
+        res.send(router);
       })
     });
   }
