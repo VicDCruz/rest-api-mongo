@@ -222,6 +222,6 @@ module.exports = function (app) {
   app.post('/router', addRouter);
   app.post('/routers', addManyRouters);
   app.put('/router/:id', updateRouter);
-  app.delete('/router/:id', deleteRouter);
+  // app.delete('/router/:id', deleteRouter);
 
 }
