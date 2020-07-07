@@ -24,7 +24,8 @@ module.exports = function (app) {
     'ap2',
     'nombre',
     'tipo',
-    'fase'
+    'fase',
+    'username',
   ];
 
   writeOnFile = text => {
@@ -92,7 +93,8 @@ module.exports = function (app) {
           ap2: req.body.ap2,
           nombre: req.body.nombre,
           tipo: req.body.tipo,
-          fase: req.body.fase
+          fase: req.body.fase,
+          username: req.body.username
         });
 
         router.save(err => {
@@ -142,7 +144,8 @@ module.exports = function (app) {
             ap2: element.ap2,
             nombre: element.nombre,
             tipo: element.tipo,
-            fase: element.fase
+            fase: element.fase,
+            username: element.username
           });
 
           router.save(err => {
@@ -186,6 +189,7 @@ module.exports = function (app) {
       router.nombre = req.body.nombre;
       router.tipo = req.body.tipo;
       router.fase = req.body.fase;
+      router.username = req.body.username;
 
       router.save(err => {
         if (!err) {

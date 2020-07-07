@@ -17,6 +17,7 @@ var routerSchema = new Schema({
   nombre: { type: String },
   tipo: { type: String },
   fase: { type: String },
+  username: { type: String },
 }, { timestamps: { createdAt: 'created_at' } });
 
 
