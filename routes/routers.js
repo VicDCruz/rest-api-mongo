@@ -221,7 +221,7 @@ module.exports = function (app) {
   }
 
   //Link routers and functions
-  app.get('/routers', findAllRouters);
+  // app.get('/routers', findAllRouters);
   app.get('/router/:id', findById);
   app.post('/router', addRouter);
   app.post('/routers', addManyRouters);
